@@ -39,9 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # 第三方应用
+    'rest_framework',
 
     # 自己的应用
-    'webcomics'
+    'webcomics.apps.WebcomicsConfig',
+    'user.apps.UserConfig',
 ]
 
 MIDDLEWARE = [
@@ -80,8 +82,12 @@ WSGI_APPLICATION = 'learn.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'learn',
+        'USER': 'root',
+        'PASSWORD': 'czd158805',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
 }
 
