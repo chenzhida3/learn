@@ -8,3 +8,6 @@ from user.serializer import RegisterSerializer
 class RegisterView(CreateAPIView):
     '''注册视图'''
     serializer_class = RegisterSerializer
+
+
+
