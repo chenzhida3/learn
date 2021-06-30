@@ -49,3 +49,7 @@ class RegisterSerializer(serializers.ModelSerializer):
                 }
             }
         }
+
+    def create(self, validated_data):
+        validated_data.pop('password_confirm')
+        return super(RegisterSerializer, self).create(validated_data)
