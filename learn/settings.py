@@ -25,7 +25,7 @@ SECRET_KEY = 'yp3t3+#zl@)-0msd6r_pz9=z+tmlpa1_gva_6x98)znd*16w%1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # 第三方应用
     'rest_framework',
     'drf_yasg',  # 生成swagger接口文档
+    'corsheaders',  # 解决前端请求跨域问题
 
     # 自己的应用
     'webcomics.apps.WebcomicsConfig',
@@ -55,6 +56,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 解决前端请求跨域问题
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'learn.urls'
@@ -166,3 +170,30 @@ SWAGGER_SETTINGS = {
     'OPERATIONS_SORTER': 'alpha',
     'VALIDATOR_URL': None,
 }
+
+#跨域增加忽略
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = ()
+
+CORS_ALLOW_METHODS = (
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+    'VIEW',
+)
+
+CORS_ALLOW_HEADERS = (
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+)
