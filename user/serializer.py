@@ -5,6 +5,7 @@
 @Author  : Chenzd
 @Software: PyCharm
 '''
+import logging
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework_jwt.settings import api_settings
@@ -59,6 +60,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         password = attrs.get('password')
         password_confirm = attrs.get('password_confirm')
         if password != password_confirm:
+            logging.error('两次输入密码不一致',password, password_confirm)
             raise serializers.ValidationError('两次输入密码不一致!')
         return attrs
 
