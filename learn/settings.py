@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     # 自己的应用
     'webcomics.apps.WebcomicsConfig',
     'user.apps.UserConfig',
+    'projects.apps.ProjectsConfig',
+    'interfaces.apps.InterfacesConfig'
 ]
 
 MIDDLEWARE = [
@@ -143,7 +145,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
-    'DEFAULT_SCHEMA_CLASS':'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
 }
 
 JWT_AUTH = {
@@ -268,7 +270,7 @@ LOGGING = {
         },
         # log 调用时需要当作参数传入
         'log': {
-            'handlers': ['error', 'info', 'console', 'default'],
+            'handlers': ['error', 'info', 'console', 'default'], #将来项目上线，把console去掉
             'level': 'INFO',
             'propagate': True
         },
