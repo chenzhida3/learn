@@ -2,7 +2,7 @@ import json
 
 from django.http import JsonResponse, HttpResponse, Http404
 from projects.models import Projects
-from projects.serializer import ProjectSerializer
+from projects.serializer import ProjectModelSerializer
 from django.views import View
 # Create your views here.
 class ProjectsView(View):
@@ -10,7 +10,7 @@ class ProjectsView(View):
     # 获取所有项目
     def get(self, request):
         project_qs = Projects.objects.all()
-        serializer = ProjectSerializer(instance=project_qs, many=True)
+        serializer = ProjectModelSerializer(instance=project_qs, many=True)
         return JsonResponse(serializer.data, safe=False)
 
     # 创建
@@ -19,7 +19,7 @@ class ProjectsView(View):
         json_data = request.body.decode('utf-8')
         python_data = json.loads(json_data, encoding='utf-8')
 
-        serializer = ProjectSerializer(data=python_data)
+        serializer = ProjectModelSerializer(data=python_data)
         try:
             serializer.is_valid(raise_exception=True)
         except Exception as e:
@@ -40,7 +40,7 @@ class ProjectsDetail(View):
         """获取项目详情"""
         # 1、校验pk  省略
         project = self.get_object(pk)
-        serializer = ProjectSerializer(instance=project)
+        serializer = ProjectModelSerializer(instance=project)
         return JsonResponse(serializer.data)
 
     # 更新
@@ -50,7 +50,7 @@ class ProjectsDetail(View):
         json_data = request.body.decode('utf-8')
         python_data = json.loads(json_data, encoding='utf-8')
 
-        serializer = ProjectSerializer(instance=project, data=python_data)
+        serializer = ProjectModelSerializer(instance=project, data=python_data)
         try:
             serializer.is_valid(raise_exception=True)
         except Exception as e:

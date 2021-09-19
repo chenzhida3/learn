@@ -7,6 +7,7 @@
 序列化器
 '''
 from rest_framework import serializers
+from rest_framework.serializers import ModelSerializer
 from rest_framework.validators import UniqueValidator
 from projects.models import Projects
 
@@ -57,6 +58,35 @@ class ProjectSerializer(serializers.Serializer):
         instance.desc = validated_data['desc']
         instance.save()
         return instance
+
+class ProjectModelSerializer(ModelSerializer):
+    name = serializers.CharField(label='项目名称', max_length=255, min_length=3, help_text='项目名称',
+                                 validators=[UniqueValidator(queryset=Projects.objects.all(),
+                                                             message='项目名称不能重复'),
+                                             str_length_unique],
+                                 error_messages={"max_length": "长度不能超过255个字节",
+                                                 "min_length": "长度不能少于3个字符"})
+
+    class Meta:
+        # 指定参考哪一个模型类来创建
+        model = Projects
+        # 2.指定为模型类的哪些字段，来生成序列化器
+        fields = "__all__"
+        # 除了元祖里面的字段 其它全部生成序列化字段
+        # exclude = ("name")
+        # 只读输出
+        # read_only_fields = ('name', 'tester')
+
+    # 单字段校验  validate_要校验的字段名
+    def validate_name(self, value):
+        if not value.endswith('项目'):
+            raise serializers.ValidationError('项目名称必须以"项目"结尾')
+        return value  # 校验后要返回   不然就返回None
+
+    # 多字段校验 validate
+    def validate(self, attrs):
+        pass
+        return attrs
 
 
 
