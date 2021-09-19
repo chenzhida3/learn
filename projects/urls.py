@@ -11,6 +11,6 @@ from projects import views
 
 
 urlpatterns = [
-    path('a/', views.ProjectsView.as_view()),
-    # path('login/', obtain_jwt_token),
+    path('', views.ProjectsView.as_view()),
+    path('<int:pk>/', views.ProjectsDetail.as_view()),
 ]

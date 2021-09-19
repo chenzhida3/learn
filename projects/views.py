@@ -1,44 +1,111 @@
-from django.http import JsonResponse, HttpResponse
-from django.shortcuts import render
+import json
+
+from django.http import JsonResponse, HttpResponse, Http404
 from projects.models import Projects
+from projects.serializer import ProjectSerializer
 from django.views import View
-from django.db.models import Q
 # Create your views here.
 class ProjectsView(View):
 
     def get(self, request):
-        # 创建数据库数据
-        # pro_obj = Projects(name='牛逼项目', leader='icon', tester='czd', publish_app='应用', programer='xxx',
-        #          desc='这是伟大的项目')
-        # pro_obj.save()
-        # 增
-        # Projects.objects.create(name='牛逼项目2', leader='icon', tester='czd', publish_app='应用', programer='xxx',
-        #                         desc='这是伟大的项目2')
+        project_qs = Projects.objects.all()
+        # project_list = []
+        # for project in project_qs:
+        #     project_list.append({
+        #         'name': project.name,
+        #         'leader': project.leader,
+        #         'tester': project.tester,
+        #         'programer': project.programer,
+        #         'publish_app': project.publish_app,
+        #         'desc': project.desc
+        #     })
+        # return JsonResponse(project_list, safe=False)
+        serializer = ProjectSerializer(instance=project_qs, many=True)
+        return JsonResponse(serializer.data, safe=False)
 
-        """
-        查询
-        """
-        # 查询所有数据   返回查询集
-        a = Projects.objects.all()
-        print(a[0].leader)
-        # 查询一条记录  若不存在会返回异常
-        b = Projects.objects.get(id=1)
-        print(b)
-        # 查询多条记录 filter过滤，exclude是跟filter反向查询
-        c = Projects.objects.filter(tester='czd')
-        print(c)
-        # 模糊查询 字段后面加__  i开头表示不区分大小写
-        d = Projects.objects.filter(tester__contains='g')
-        print(d)
-        # 跨表查询 子表查主表 查询接口为化的项目  主表查子表 在子表查
-        e = Projects.objects.filter(interfaces__name__contains='化')
-        print(e)
-        # 关系查询 比较查询 gt大于 lt小于 gte大于等于 lte 小于等于
-        f = Projects.objects.filter(id__gt=3)
-        print(f)
-        # 逻辑查询，多个条件查询 两个条件直接写是且的关系 用Q变量是或的关系
-        g = Projects.objects.filter(tester='czd', name__contains='web')
-        h = Projects.objects.filter(Q(tester='tingting') | Q(name__contains='web'))
-        print(g)
-        print(h)
-        return HttpResponse('<h1>hello</h1>')
+    def post(self, request):
+        """新增项目"""
+        # 从前端获取json数据，转化成python的类型
+        json_data = request.body.decode('utf-8')
+        python_data = json.loads(json_data, encoding='utf-8')
+
+        serializer = ProjectSerializer(data=python_data)
+        # 校验前端传的参数
+        # 调用序列化器的is_valid方法， 开始校验前端参数
+        try:
+            serializer.is_valid(raise_exception=True)
+        except Exception as e:
+            return JsonResponse(serializer.errors)
+
+        # 向数据库新增项目
+        # new_project = Projects.objects.create(name=python_data['name'],
+        #                         leader=python_data['leader'],
+        #                         tester=python_data['tester'],
+        #                         programer=python_data['programer'],
+        #                         publish_app=python_data['publish_app'],
+        #                         desc=python_data['desc'])
+        project = Projects.objects.create(**serializer.validated_data)
+
+        serializer = ProjectSerializer(instance=project)
+        return JsonResponse(serializer.data, status=201)
+
+class ProjectsDetail(View):
+    """项目详情"""
+    def get_object(self, pk):
+        try:
+            return Projects.objects.get(id=pk)
+        except Projects.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        """获取项目详情"""
+        # 1、校验pk  省略
+        project = self.get_object(pk)
+        # one_dict = {
+        #     'name': project.name,
+        #     'leader': project.leader,
+        #     'tester': project.tester,
+        #     'programer': project.programer,
+        #     'publish_app': project.publish_app,
+        #     'desc': project.desc
+        # }
+        # 1.通过模型类对象或者查询集传给instance，就可以进行序列化输出
+        # 2.通过序列化器对象的data属性，就可以获得字典
+        serializer = ProjectSerializer(instance=project)
+        return JsonResponse(serializer.data)
+
+    # 更新
+    def put(self, request, pk):
+        project = self.get_object(pk)
+        # 从前端获取json数据，转化成python的类型
+        json_data = request.body.decode('utf-8')
+        python_data = json.loads(json_data, encoding='utf-8')
+
+        serializer = ProjectSerializer(data=python_data)
+        try:
+            serializer.is_valid(raise_exception=True)
+        except Exception as e:
+            return JsonResponse(serializer.errors)
+
+        project.name = serializer.validated_data['name']
+        project.leader = serializer.validated_data['leader']
+        project.tester = serializer.validated_data['tester']
+        project.programer = serializer.validated_data['programer']
+        project.publish_app = serializer.validated_data['publish_app']
+        project.desc = serializer.validated_data['desc']
+        project.save()
+        # one_dict = {
+        #     'name': project.name,
+        #     'leader': project.leader,
+        #     'tester': project.tester,
+        #     'programer': project.programer,
+        #     'publish_app': project.publish_app,
+        #     'desc': project.desc
+        # }
+        serializer = ProjectSerializer(instance=project)
+        return JsonResponse(serializer.data, status=201)
+
+    def delete(self, request, pk):
+        project = self.get_object(pk)
+        project.delete()
+        return JsonResponse(None, safe=False, status=204)
