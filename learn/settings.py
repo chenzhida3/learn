@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',  # 生成swagger接口文档
     'corsheaders',  # 解决前端请求跨域问题
+    'django_filters',  # 过滤引擎
 
     # 自己的应用
     'webcomics.apps.WebcomicsConfig',
@@ -146,6 +147,14 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
     ),
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    # 过滤器引擎----排序/过滤
+    'DEFAULT_FILTER_BACKENDS': ['rest_framework.filters.OrderingFilter',
+                                'django_filters.rest_framework.backends.DjangoFilterBackend'],
+    # 分页引擎
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    #                             'PAGE_SIZE': 3,
+    'DEFAULT_PAGINATION_CLASS': 'utils.pagination.PageNumberPaginationManual',
+
 }
 
 JWT_AUTH = {

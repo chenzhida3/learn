@@ -22,6 +22,7 @@ class Projects(models.Model):
         # 会在admin站点显示更人性化的表名
         verbose_name = '项目'
         verbose_name_plural = '项目'
+        ordering = ['id']  # 分页查询需要这个字段，不然会有警告
 
     def __str__(self):
         return self.name

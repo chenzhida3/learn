@@ -11,6 +11,6 @@ from projects import views
 
 
 urlpatterns = [
-    path('', views.ProjectsView.as_view()),
+    path('', views.ProjectsList.as_view()),
     path('<int:pk>/', views.ProjectsDetail.as_view()),
 ]
