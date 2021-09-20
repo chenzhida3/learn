@@ -60,7 +60,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         password = attrs.get('password')
         password_confirm = attrs.get('password_confirm')
         if password != password_confirm:
-            logging.error('两次输入密码不一致',password, password_confirm)
+            logging.error('两次输入密码不一致', password, password_confirm)
             raise serializers.ValidationError('两次输入密码不一致!')
         return attrs
 
