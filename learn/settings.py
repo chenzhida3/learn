@@ -12,11 +12,12 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import datetime
 import os
 import time
+import sys
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+sys.path.insert(0, os.path.join(BASE_DIR, 'apis'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -47,17 +48,22 @@ INSTALLED_APPS = [
     'django_filters',  # 过滤引擎
 
     # 自己的应用
-    'webcomics.apps.WebcomicsConfig',
     'user.apps.UserConfig',
     'projects.apps.ProjectsConfig',
-    'interfaces.apps.InterfacesConfig'
+    'interfaces.apps.InterfacesConfig',
+    'configures.apps.ConfiguresConfig',
+    'debugtalks.apps.DebugtalksConfig',
+    'envs.apps.EnvsConfig',
+    'reports.apps.ReportsConfig',
+    'testcases.apps.TestcasesConfig',
+    'testsuits.apps.TestsuitsConfig'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -154,6 +160,10 @@ REST_FRAMEWORK = {
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     #                             'PAGE_SIZE': 3,
     'DEFAULT_PAGINATION_CLASS': 'utils.pagination.PageNumberPaginationManual',
+    'EXCEPTION_HANDLER': 'utils.exception.custom_exception_handler',
+    'DEFAULT_RENDERER_CLASSES': (
+        'utils.rendresponse.customrenderer',
+    ),
 
 }
 

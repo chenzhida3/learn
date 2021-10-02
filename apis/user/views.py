@@ -1,11 +1,12 @@
 from django.shortcuts import render
 
 # Create your views here.
+
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from user.serializer import RegisterSerializer
+from apis.user.serializer import RegisterSerializer
 from django.contrib.auth.models import User
 
 class RegisterView(CreateAPIView):
@@ -26,7 +27,8 @@ class UsernameView(APIView):
 
 class EmailValidateView(APIView):
     """校验邮箱是否存在"""
-    def get(self, request, email):
+    def get(self, request):
+        email = request.GET.get('email')
         data_dict = {
             "email": email,
             "count": User.objects.filter(email=email).count()

@@ -66,8 +66,8 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         del validated_data['password_confirm']
-        user = User.objects.create_user(**validated_data)
 
+        user = User.objects.create_user(**validated_data)
         # 生成token并在序列化器输出
         jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
         jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
