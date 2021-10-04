@@ -1,8 +1,8 @@
 from django.db import models
-
+from utils.base_models import BaseModel
 # Create your models here.
 
-class Projects(models.Model):
+class Projects(BaseModel):
     """项目的数据库模型类"""
 
     # verbose_name用于设置字段名    unique用于设置当前字段是否唯一

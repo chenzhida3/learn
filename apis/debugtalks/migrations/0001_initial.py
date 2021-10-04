@@ -14,21 +14,20 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Interfaces',
+            name='Debugtalks',
             fields=[
                 ('id', models.AutoField(help_text='id主键', primary_key=True, serialize=False, verbose_name='id主键')),
                 ('create_time', models.DateTimeField(auto_now_add=True, help_text='创建时间', verbose_name='创建时间')),
                 ('update_time', models.DateTimeField(auto_now=True, help_text='更新时间', verbose_name='更新时间')),
                 ('is_delete', models.BooleanField(default=False, help_text='逻辑删除', verbose_name='逻辑删除')),
-                ('name', models.CharField(help_text='接口名称', max_length=255, unique=True, verbose_name='接口名称')),
-                ('tester', models.CharField(help_text='测试人员', max_length=50, verbose_name='测试人员')),
-                ('desc', models.TextField(blank=True, default='', help_text='简要描述', null=True, verbose_name='简要描述')),
-                ('project', models.ForeignKey(help_text='所属项目', on_delete=django.db.models.deletion.CASCADE, to='projects.projects', verbose_name='所属项目')),
+                ('name', models.CharField(help_text='内置函数名', max_length=255, unique=True, verbose_name='内置函数名')),
+                ('debugtalk', models.TextField(default='#debugtalk.py', help_text='debugtalk.py文件', verbose_name='debugtalk.py文件')),
+                ('project', models.OneToOneField(help_text='所属项目', on_delete=django.db.models.deletion.CASCADE, to='projects.projects', verbose_name='所属项目')),
             ],
             options={
-                'verbose_name': '接口',
-                'verbose_name_plural': '接口',
-                'db_table': 'interfaces_tb',
+                'verbose_name': '内置函数表',
+                'verbose_name_plural': '内置函数表',
+                'db_table': 'debugtalks_tb',
             },
         ),
     ]

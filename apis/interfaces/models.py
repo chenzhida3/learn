@@ -1,7 +1,8 @@
 from django.db import models
+from utils.base_models import BaseModel
 
 # Create your models here.
-class Interfaces(models.Model):
+class Interfaces(BaseModel):
     """接口的数据模型"""
     name = models.CharField(verbose_name='接口名称', max_length=255, unique=True, help_text='接口名称')
     tester = models.CharField(verbose_name='测试人员', max_length=50, help_text='测试人员')

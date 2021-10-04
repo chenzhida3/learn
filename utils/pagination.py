@@ -13,7 +13,7 @@ from rest_framework.response import Response
 
 
 class PageNumberPaginationManual(PageNumberPagination):
-    page_size = 2  # 默认每页显示条数配置
+    page_size = 20  # 默认每页显示条数配置
     page_query_param = 'p'  # “页数”的请求参数名称, 默认是page
     page_size_query_param = 's'  # “分页大小”的请求参数名称
 
