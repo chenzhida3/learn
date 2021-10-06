@@ -32,9 +32,12 @@ class ProjectModelSerializer(ModelSerializer):
         # 2.指定为模型类的哪些字段，来生成序列化器
         # fields = "__all__"
         # 除了元祖里面的字段 其它全部生成序列化字段
-        exclude = ("update_time", "is_delete")
+        exclude = ["is_delete"]
         extra_kwargs = {
             'create_time': {
+                'read_only': True
+            },
+            'update_time': {
                 'read_only': True
             }
         }

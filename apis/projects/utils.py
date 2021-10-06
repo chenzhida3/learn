@@ -19,6 +19,8 @@ def get_count_by_project(datas):
         # 格式化时间
         mtch = re.search(r'(.*)T(.*)\..*?', item['create_time'])
         item['create_time'] = mtch.group(1)+' '+mtch.group(2)
+        mtch = re.search(r'(.*)T(.*)\..*?', item['update_time'])
+        item['update_time'] = mtch.group(1) + ' ' + mtch.group(2)
 
         project_id = item['id']
         interfaces_testcases_obj = Interfaces.objects.values('id').annotate(testcases=Count('testcases')).\

@@ -14,7 +14,7 @@ class ProjectsViewSet(ModelViewSet):
     serializer_class = ProjectModelSerializer
     permission_classes = (permissions.IsAuthenticated,)
     ordering_fields = ('id', 'name')
-    filterset_fields = ['name', 'tester', 'leader']
+    filterset_fields = ['name', 'tester', 'leader', 'publish_app']
 
     def perform_destroy(self, instance):
         instance.is_delete = True
