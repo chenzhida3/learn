@@ -2,7 +2,7 @@ from rest_framework import permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-
+from utils.time_format import time_format
 from projects.utils import get_count_by_project
 from projects.serializer import *
 from interfaces.models import Interfaces
@@ -12,7 +12,8 @@ from interfaces.models import Interfaces
 class ProjectsViewSet(ModelViewSet):
     queryset = Projects.objects.filter(is_delete=False)
     serializer_class = ProjectModelSerializer
-    permission_classes = (permissions.IsAuthenticated,)
+    # 权限
+    permission_classes = (permissions.AllowAny,)
     ordering_fields = ('id', 'name')
     filterset_fields = ['name', 'tester', 'leader', 'publish_app']
 
@@ -43,11 +44,19 @@ class ProjectsViewSet(ModelViewSet):
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
-            datas = serializer.data
+            datas = time_format(serializer.data)
             datas = get_count_by_project(datas)
             return self.get_paginated_response(datas)
 
         serializer = self.get_serializer(queryset, many=True)
-        datas = serializer.data
+        datas = time_format(serializer.data)
         datas = get_count_by_project(datas)
         return Response(datas)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        datas = []
+        datas.append(serializer.data)
+        datas_list = time_format(datas)
+        return Response(datas_list)
