@@ -35,6 +35,4 @@ def get_count_by_project(datas):
         item['configures_count'] = configures_count
         item['testsuits_count'] = testsuits_count
         datas_list.append(item)
-
-
     return datas_list

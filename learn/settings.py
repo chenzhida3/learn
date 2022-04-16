@@ -16,6 +16,8 @@ import sys
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from apis.projects.apps import ProjectsConfig
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, os.path.join(BASE_DIR, 'apis'))
 
@@ -56,7 +58,8 @@ INSTALLED_APPS = [
     'envs.apps.EnvsConfig',
     'reports.apps.ReportsConfig',
     'testcases.apps.TestcasesConfig',
-    'testsuits.apps.TestsuitsConfig'
+    'testsuits.apps.TestsuitsConfig',
+
 ]
 
 MIDDLEWARE = [
