@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 from apis.user.serializer import RegisterSerializer
 from django.contrib.auth.models import User
 
+
 class RegisterView(CreateAPIView):
     '''注册视图'''
     queryset = User.objects.all()

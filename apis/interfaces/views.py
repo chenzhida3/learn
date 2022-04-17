@@ -16,7 +16,7 @@ from rest_framework.decorators import action
 class InterfaceViewSet(ModelViewSet):
     queryset = Interfaces.objects.filter(is_delete=False)
     serializer_class = InterfaceSerializer
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.AllowAny,)
     ordering_fields = ('id', 'name')
     filterset_fields = ['name', 'tester']
 
@@ -26,7 +26,9 @@ class InterfaceViewSet(ModelViewSet):
         instance.save()
 
     """重写list  将时间格式化"""
+
     def list(self, request, *args, **kwargs):
+        request.META["CSRF_COOKIE_USED"] = True
         queryset = self.filter_queryset(self.get_queryset())
         page = self.paginate_queryset(queryset)
         if page is not None:
