@@ -11,13 +11,14 @@ from utils.time_format import time_format
 
 
 class EnvsViewSet(ModelViewSet):
+    queryset = Envs.objects.filter(is_delete=False).order_by('id')
     permission_classes = (permissions.AllowAny,)
     serializer_class = EnvsSerializer
-    queryset = Envs.objects.filter(is_delete=False)
     ordering_fields = ('id', 'name')
+    filterset_fields = ['name', 'base_url']
 
     def perform_destroy(self, instance):
-        instance.delete = True
+        instance.is_delete = True
         instance.save()
 
     def list(self, request, *args, **kwargs):

@@ -12,7 +12,7 @@ from interfaces.models import Interfaces
 
 
 class ProjectsViewSet(ModelViewSet):
-    queryset = Projects.objects.filter(is_delete=False)
+    queryset = Projects.objects.filter(is_delete=False).order_by('id')
     serializer_class = ProjectModelSerializer
     # 权限
     permission_classes = (permissions.AllowAny,)
