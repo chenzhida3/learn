@@ -4,8 +4,8 @@ from testsuits.models import Testsuits
 
 
 class TestsuitsAdmin(admin.ModelAdmin):
-    fields = ('name', 'include', 'request', 'project')
-    list_display = ['id', 'name', 'include', 'request', 'project_id']
+    fields = ('name', 'include', 'project')
+    list_display = ['id', 'name', 'include', 'project_id']
 
 
 admin.site.register(Testsuits, TestsuitsAdmin)

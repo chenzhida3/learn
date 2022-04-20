@@ -14,7 +14,7 @@ class EnvsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Envs
-        fields = ('id', 'name', 'base_url', 'create_time', 'update_time')
+        fields = ('id', 'name', 'base_url', 'desc', 'create_time', 'update_time')
 
         extra_kwargs = {
             'create_time': {

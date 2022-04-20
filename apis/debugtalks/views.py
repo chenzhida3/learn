@@ -14,7 +14,7 @@ class DebugTalksviewset(mixins.ListModelMixin,
                         mixins.RetrieveModelMixin,
                         GenericViewSet):
 
-    queryset = Debugtalks.objects.filter(is_delete=False)
+    queryset = Debugtalks.objects.filter(is_delete=False).order_by('id')
     serializer_class = DebugtalksSerializers
     permission_classes = (permissions.AllowAny,)
     order_fields = ('id', 'project_id')
