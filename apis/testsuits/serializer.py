@@ -35,6 +35,13 @@ class TestSuitsSerializer(serializers.ModelSerializer):
         testSuit = Testsuits.objects.create(**validated_data)
         return testSuit
 
+    def update(self, instance, validated_data):
+        """更新接口"""
+        if 'project_id' in validated_data:
+            project = validated_data.pop('project_id')
+            validated_data['project'] = project
+        return super().update(instance, validated_data)
+
 
 
 

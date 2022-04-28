@@ -8,6 +8,7 @@ class Testsuits(BaseModel):
     include = models.TextField(verbose_name='包含接口', help_text='包含接口', null=True)
     project = models.ForeignKey('projects.Projects', on_delete=models.CASCADE, verbose_name='所属项目',
                                   help_text='所属项目')
+    desc = models.TextField(verbose_name='简要描述', help_text='简要描述', blank=True, default='', null=True)
 
     class Meta:
         db_table = 'testsuits_tb'
