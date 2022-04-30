@@ -18,6 +18,7 @@ class DebugTalksviewset(mixins.ListModelMixin,
     serializer_class = DebugtalksSerializers
     permission_classes = (permissions.AllowAny,)
     order_fields = ('id', 'project_id')
+    filterset_fields = ['id']
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()

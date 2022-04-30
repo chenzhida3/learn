@@ -6,6 +6,7 @@ from utils.time_format import time_format
 from projects.utils import get_count_by_project
 from projects.serializer import *
 from interfaces.models import Interfaces
+from utils.filter import projectsFilter
 
 
 # Create your views here.
@@ -17,7 +18,7 @@ class ProjectsViewSet(ModelViewSet):
     # 权限
     permission_classes = (permissions.AllowAny,)
     ordering_fields = ('id', 'name')
-    filterset_fields = ['name', 'tester', 'leader', 'publish_app']
+    filterset_class = projectsFilter
 
     def perform_destroy(self, instance):
         instance.is_delete = True

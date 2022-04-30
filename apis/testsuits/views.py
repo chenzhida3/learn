@@ -7,6 +7,7 @@ from testsuits.serializer import TestSuitsSerializer
 from rest_framework import permissions
 from testsuits.models import Testsuits
 from utils.time_format import time_format
+from utils.filter import testsuitsFilter
 
 
 class TestsuitsViewSet(ModelViewSet):
@@ -15,7 +16,7 @@ class TestsuitsViewSet(ModelViewSet):
     permission_classes = (permissions.AllowAny,)
     queryset = Testsuits.objects.filter(is_delete=False).order_by('id')
     ordering_fields = ('id', 'name')
-    filterset_fields = ['id', 'name']
+    filterset_class = testsuitsFilter
 
     def perform_destroy(self, instance):
         """逻辑删除"""

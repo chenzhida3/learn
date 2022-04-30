@@ -104,7 +104,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'webcomics',
         'USER': 'root',
-        'PASSWORD': 'czd158805',
+        'PASSWORD': 'czd158805.',
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }

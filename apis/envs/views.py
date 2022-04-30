@@ -8,6 +8,7 @@ from rest_framework import permissions
 from envs.models import Envs
 from rest_framework.decorators import action
 from utils.time_format import time_format
+from utils.filter import envsFilter
 
 
 class EnvsViewSet(ModelViewSet):
@@ -15,7 +16,7 @@ class EnvsViewSet(ModelViewSet):
     permission_classes = (permissions.AllowAny,)
     serializer_class = EnvsSerializer
     ordering_fields = ('id', 'name')
-    filterset_fields = ['name', 'base_url']
+    filterset_class = envsFilter
 
     def perform_destroy(self, instance):
         instance.is_delete = True

@@ -11,6 +11,7 @@ from testcases.models import TestCases
 from utils.time_format import time_format
 from interfaces.utils import get_count_by_interface
 from rest_framework.decorators import action
+from utils.filter import interfacesFilter
 
 
 class InterfaceViewSet(ModelViewSet):
@@ -18,7 +19,7 @@ class InterfaceViewSet(ModelViewSet):
     serializer_class = InterfaceSerializer
     permission_classes = (permissions.AllowAny,)
     ordering_fields = ('id', 'name')
-    filterset_fields = ['name', 'tester']
+    filterset_class = interfacesFilter
 
     def perform_destroy(self, instance):
         """逻辑删除"""
