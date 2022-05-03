@@ -56,6 +56,7 @@ urlpatterns = [
     path('envs/', include('envs.urls')),
     path('debugtalk/', include('debugtalks.urls')),
     path('testsuit/', include('testsuits.urls')),
+    path('reports/', include('reports.urls')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('docs/', include_docs_urls(title='测试平台接口文档')),
     # 配置drf-yasg路由
