@@ -9,6 +9,8 @@ import json
 from utils import handle_datas
 from interfaces.models import Interfaces
 from rest_framework.response import Response
+from utils.filter import configureFilter
+from utils.time_format import time_format
 
 
 class ConfiguresViewSet(ModelViewSet):
@@ -16,6 +18,7 @@ class ConfiguresViewSet(ModelViewSet):
     serializer_class = ConfiguresSerialzer
     permission_classes = (permissions.AllowAny,)
     ordering_fields = ('id', 'name')
+    filterset_class = configureFilter
 
     def perform_destroy(self, instance):
         '''
@@ -49,4 +52,16 @@ class ConfiguresViewSet(ModelViewSet):
             'selected_project_id': selected_project_id,
             'globalVar': config_variables_list
         }
+        return Response(datas)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            datas = time_format(serializer.data)
+            return self.get_paginated_response(datas)
+
+        serializer = self.get_serializer(queryset, many=True)
+        datas = time_format(serializer.data)
         return Response(datas)
