@@ -1,0 +1,31 @@
+- config:
+    name: login case
+    variables:
+      info: "%7B%22os_type%22%3A%22android%22%2C%22adid%22%3A%2250b92a1a-9f75-4b4b-865f-5ded2263f183%22%2C%22pkg_name%22%3A%22com.webcomics.manga%22%2C%22udid%22%3A%2202e8dfb46a41e8b7%22%2C%22brand%22%3A%22vivo%22%2C%22model%22%3A%22V1965A%22%2C%22country%22%3A%22us%22%2C%22city%22%3A%22%22%2C%22language%22%3A%22en_US%22%2C%22os_version%22%3A29%2C%22app_version%22%3A%222.1.30%22%2C%22app_version_code%22%3A2130%2C%22network%22%3A%22Unknown%22%2C%22resolution%22%3A%222340*1080%22%2C%22screen_size%22%3A%226.536157791581338%22%2C%22memory_total%22%3A%227.43GB%22%2C%22channel%22%3A%22gp%22%2C%22GMT%22%3A8%2C%22sex%22%3A2%2C%22gp_refer%22%3A%22utm_source%3Dgoogle-play%26utm_medium%3Dorganic%22%2C%22fcm_token%22%3A%22epCvDRDbQTuOnFoaLd6RsH%3AAPA91bF5Wva0ng8tRNIc05OW0q1GB4x3QrVI80Uv1BznLfrq_07TbSnGUaUz8Ge4PNjChRJZCkAnjwsLiNbn4gyf28Oi4naGsAzPn9eFiWenAtBnHa9a_pFqaFPeePcxDob7QW0xUu8u%22%2C%22sim_country_code%22%3A%22%22%2C%22imsi%22%3A%22%22%2C%22birthday%22%3A852102275594%2C%22app_type%22%3A0%2C%22channel_refer%22%3A%22%22%2C%22channel_refer_byaf%22%3A%22%22%2C%22campaign_id%22%3A%220%22%2C%22ad_set_id%22%3A%220%22%2C%22ad_id%22%3A%220%22%2C%22is_root%22%3Afalse%2C%22is_emulator%22%3Afalse%2C%22is_virtual_apk%22%3Afalse%2C%22is_login%22%3A1%7D"
+    base_url: 'http://test.mangaina.com'
+
+- test:
+    name: step login
+    variables:
+        email: "api18@qq.com"
+        password: "123456"
+        type: 7
+    request:
+        url: /api/new/user/login
+        method: POST
+        headers:
+            Content-Type: application/json
+            info: $info
+        json:
+            email: $email
+            password: $password
+            type: $type
+    extract:
+        token: content.data.token
+        code: content.code
+        nickName: content.data.user.nickName
+    validate:
+        - eq: [status_code, 200]
+        - eq: [$code, 1000]
+        - eq: [$nickName, "Vsjsjjsjsjsjsssssssd"]
+
