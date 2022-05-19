@@ -56,4 +56,3 @@ def handle_data4(datas):
             })
     return result_list
 
-

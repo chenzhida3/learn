@@ -53,10 +53,10 @@ class ConfiguresViewSet(ModelViewSet):
         config_variables_list = handle_datas.handle_data2(config_variables)
 
         # 处理配置文件名称
-        config_name = config_request['config']['name']
+        config_name = config_request['config'].get('name')
 
         # 处理基础路由
-        config_baseUrl = config_request['config']['base_url']
+        config_baseUrl = config_request['config'].get('base_url')
 
         selected_interface_id = config_obj.interface_id
         selected_project_id = Interfaces.objects.get(id=selected_interface_id).project_id
@@ -90,11 +90,6 @@ class ConfiguresViewSet(ModelViewSet):
         except:
             return Response(data={'pk': 'id值为空'}, status=400)
 
-        for key, value in request.data['globalVar']:
-            print(key,value)
-            variables = {key: value}
-            request.data['variables'] = variables
-        print(request.data)
         serializer = ConfiguresSerialzer(instance=configures_obj, data=request.data, partial=True,
                                             context={'request': request})
         serializer.is_valid(raise_exception=True)
