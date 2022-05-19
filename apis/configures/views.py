@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 # Create your views here.
+from rest_framework.decorators import action
 from rest_framework.viewsets import ModelViewSet
 from configures.models import Configures
 from configures.serialzer import ConfiguresSerialzer
@@ -8,6 +9,7 @@ from rest_framework import permissions
 import json
 from utils import handle_datas
 from interfaces.models import Interfaces
+from projects.models import Projects
 from rest_framework.response import Response
 from utils.filter import configureFilter
 from utils.time_format import time_format
@@ -26,6 +28,20 @@ class ConfiguresViewSet(ModelViewSet):
         '''
         instance.is_delete = True
         instance.save()
+
+    @action(methods=['get'], detail=True)
+    def interfacesAndProject(self, request, pk=None):
+        configure_objs = Configures.objects.filter(id=pk, is_delete=False).first()
+        interface_objs = Interfaces.objects.filter(id=configure_objs.interface_id, is_delete=False).first()
+        project_objs = Projects.objects.filter(id=interface_objs.project_id, is_delete=False).first()
+        one_list = {
+            'iid': interface_objs.id,
+            'name': interface_objs.name,
+            'pid': project_objs.id,
+            'pname': project_objs.name
+        }
+
+        return Response(data=one_list)
 
     def retrieve(self, request, *args, **kwargs):
         """获取配置详情"""
@@ -65,3 +81,22 @@ class ConfiguresViewSet(ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         datas = time_format(serializer.data)
         return Response(datas)
+
+    # 重写部分更新接口
+    def partial_update(self, request, *args, **kwargs):
+        pk = kwargs.get('pk')
+        try:
+            configures_obj = Configures.objects.get(is_delete=False, pk=pk)
+        except:
+            return Response(data={'pk': 'id值为空'}, status=400)
+
+        for key, value in request.data['globalVar']:
+            print(key,value)
+            variables = {key: value}
+            request.data['variables'] = variables
+        print(request.data)
+        serializer = ConfiguresSerialzer(instance=configures_obj, data=request.data, partial=True,
+                                            context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        book_obj = serializer.save()
+        return Response(ConfiguresSerialzer(book_obj).data)

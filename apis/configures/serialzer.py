@@ -11,6 +11,7 @@
 from rest_framework import serializers
 from configures.models import Configures
 from interfaces.models import Interfaces
+from projects.models import Projects
 from utils.validates import whether_existed_project_id, whether_existed_interface_id
 
 
