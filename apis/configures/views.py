@@ -5,7 +5,7 @@ from rest_framework.decorators import action
 from rest_framework.viewsets import ModelViewSet
 from configures.models import Configures
 from configures.serialzer import ConfiguresSerialzer
-from rest_framework import permissions
+from rest_framework import permissions, status
 import json
 from utils import handle_datas
 from interfaces.models import Interfaces
@@ -95,3 +95,20 @@ class ConfiguresViewSet(ModelViewSet):
         serializer.is_valid(raise_exception=True)
         book_obj = serializer.save()
         return Response(ConfiguresSerialzer(book_obj).data)
+
+    # 重写创建接口
+    # 前端传的isinstance是字符串需要转化成数组
+    def create(self, request, *args, **kwargs):
+        if isinstance(request.data['interface'], str):
+            data = request.data.dict().copy()
+            interface = eval(data.get('interface'))
+            data.pop('interface')
+            data['interface'] = interface
+
+        else:
+            data = request.data
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
