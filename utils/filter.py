@@ -7,6 +7,7 @@ from projects.models import Projects
 from interfaces.models import Interfaces
 from envs.models import Envs
 from configures.models import Configures
+from testcases.models import TestCases
 
 # exact表示精确匹配, 并且忽略大小写
 # icontains表示模糊查询（包含），并且忽略大小写
@@ -72,5 +73,17 @@ class configureFilter(FilterSet):
     class Meta:
         # 指定模型
         models = Configures
+        # 指定需要模糊查询的字段
+        fields = ['id', 'name', 'author']
+
+
+class testcasesFilter(FilterSet):
+    id = django_filters.CharFilter(field_name='id', lookup_expr='exact')
+    name = django_filters.CharFilter(field_name='name', lookup_expr='icontains')
+    author = django_filters.CharFilter(field_name='author', lookup_expr='icontains')
+
+    class Meta:
+        # 指定模型
+        models = TestCases
         # 指定需要模糊查询的字段
         fields = ['id', 'name', 'author']
