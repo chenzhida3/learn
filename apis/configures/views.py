@@ -43,6 +43,19 @@ class ConfiguresViewSet(ModelViewSet):
 
         return Response(data=one_list)
 
+    @action(methods=['get'], detail=True)
+    def interfaces(self, request, pk=None):
+        configure_objs = Configures.objects.filter(interface__id=pk, is_delete=False)
+        datas = []
+        for configure in configure_objs:
+            one_list = {
+                'id': configure.id,
+                'name': configure.name,
+            }
+            datas.append(one_list)
+        return Response(data=datas)
+
+
     def retrieve(self, request, *args, **kwargs):
         """获取配置详情"""
         config_obj = self.get_object()
